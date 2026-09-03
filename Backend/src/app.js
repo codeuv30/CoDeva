@@ -2,6 +2,7 @@ import express from "express";
 import passport from "passport";
 import "../src/config/passport.js"
 import CONFIG from "./config/config.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -13,7 +14,6 @@ app.use(passport.initialize());
 
 /* Import Routes */
 import authRouter from "./routes/auth.routes.js";
-import cookieParser from "cookie-parser";
 
 /* Using Routes */
 app.use("/api/v1/auth", authRouter);
