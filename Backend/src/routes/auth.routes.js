@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import CONFIG from "../config/config.js";
 import redis from "../config/redis.js";
 import crypto from "crypto";
+import { authorizeUser } from "../middlewares/auth.middleware.js";
 
 const authRouter = Router();
 
@@ -108,9 +109,34 @@ authRouter.post("/choose-username", async (req, res) => {
     username
   });
 
+  const accessToken = jwt.sign(
+        {
+          userId: existingUser._id,
+          github_id: profile.id,
+        },
+        CONFIG.JWT_SECRET,
+        { expiresIn: "7d" },
+      );
+
+      res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure: CONFIG.NODE_ENV === "production" ? true : false,
+      sameSite: "lax",
+      signed: true
+    });
+
   return res.status(200).json({
     success: true,
     message: "User Registered Successfully."
+  });
+});
+
+authRouter.get("/me", authorizeUser, (req, res) =>  {
+  return res.status(200).json({
+    success: true,
+    message: "User fetched sucessfully",
+    user: req.user
   });
 });
 
