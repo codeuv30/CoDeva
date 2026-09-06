@@ -5,7 +5,7 @@ import { COLORS } from "../../../../constants";
 
 const SignInModal = ({ open, onOpenChange }) => {
   const handleGitHubLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`;
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/github`;
   };
 
   return (

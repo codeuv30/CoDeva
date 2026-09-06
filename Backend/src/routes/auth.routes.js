@@ -16,7 +16,7 @@ const authRouter = Router();
  */
 authRouter.get(
   "/github",
-  passport.authenticate("github", { scope: ["user:email"], session: false }),
+  passport.authenticate("github", { scope: ["user:email"], session: false, prompt: 'select_account' }),
 );
 
 /**
